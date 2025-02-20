@@ -1,0 +1,21 @@
+{
+  "name": "electron-autodag",
+  "version": "1.0.0",
+  "description": "This web application helps you generate DAG script using GUI",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/electron/electron-quick-start",
+  "keywords": [
+    "Electron",
+    "autodag"
+  ],
+  "author": "sharath",
+  "devDependencies": {
+    "electron": "^3.0.7"
+  },
+  "dependencies": {
+    "jquery": "^3.3.1"
+  }
+}
