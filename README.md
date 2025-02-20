@@ -1,5 +1,7 @@
 ## AutoDAG
 
+### in order to install
+
 naviagate to extracted folder in terminal
 
 type following command in terminal
