@@ -29,14 +29,14 @@ This tool automates the creation of Apache Airflow workflows (DAGs), streamlinin
 1. **Clone the Repository**:
 
    ```bash
-   git clone https://github.com/yourusername/airflow-script-automation-tool.git
+   git clone git@github.com:5harath/AutoDAG.git
    ```
 
 
 2. **Navigate to the Project Directory**:
 
    ```bash
-   cd airflow-script-automation-tool
+   cd AutoDAG
    ```
 
 
