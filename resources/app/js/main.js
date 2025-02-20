@@ -318,4 +318,104 @@ function saveDAGFile()
     after = after.concat("        # Parsing recursively through all the python files in the directory path given","\n");
     after = after.concat("        result = [os.path.join(dp, f) for dp, dn, filenames in os.walk(path) for f in filenames if","\n");
     after = after.concat("            os.path.splitext(f)[1] == '.py']","\n");
-    after = after.concat("        result_shell = [os.path.join(dp, f) for dp
+    after = after.concat("        result_shell = [os.path.join(dp, f) for dp, dn, filenames in os.walk(path) for f in filenames if","\n");
+    after = after.concat("            os.path.splitext(f)[1] == '.sh']","\n");
+    after = after.concat("        result_R = [os.path.join(dp, f) for dp, dn, filenames in os.walk(path) for f in filenames if","\n");
+    after = after.concat("            os.path.splitext(f)[1] == '.r' or os.path.splitext(f)[1] == '.R']","\n");
+    after = after.concat("","\n");
+    after = after.concat("        for iter_path in result:","\n");
+    after = after.concat("            command = \"python '\" + iter_path + \"'\"","\n");
+    after = after.concat("            iter_dag = ntpath.basename(iter_path)","\n");
+    after = after.concat("            i = iter_dag.split('.')","\n");
+    after = after.concat("","\n");
+    after = after.concat("            if i[0] in dags:","\n");
+    after = after.concat("                if i[0] not in idag:","\n");
+    after = after.concat("                    if i[0] in dags_mail:","\n");
+    after = after.concat("                        idag[i[0]] = BashOperator(","\n");
+    after = after.concat("                            task_id=i[0],","\n");
+    after = after.concat("                            bash_command=command,","\n");
+    after = after.concat("                            email_on_failure = True,","\n");
+    after = after.concat("                            email = '",textFail,"',\n");
+    after = after.concat("                            dag=dag)","\n");
+    after = after.concat("                    if i[0] not in dags_mail:","\n");
+    after = after.concat("                        idag[i[0]] = BashOperator(","\n");
+    after = after.concat("                            task_id=i[0],","\n");
+    after = after.concat("                            bash_command=command,","\n");
+    after = after.concat("                            dag=dag)","\n");
+    after = after.concat("","\n");
+    after = after.concat("        for iter_path in result_shell:","\n");
+    after = after.concat("            command = \"chmod +rwx '\" + iter_path + \"';/'\" + iter_path + \"'\"","\n");
+    after = after.concat("            iter_dag = ntpath.basename(iter_path)","\n");
+    after = after.concat("            i = iter_dag.split('.')","\n");
+    after = after.concat("","\n");
+    after = after.concat("            if i[0] in dags:","\n");
+    after = after.concat("                if i[0] not in idag:","\n");
+    after = after.concat("                    if i[0] in dags_mail:","\n");
+    after = after.concat("                        idag[i[0]] = BashOperator(","\n");
+    after = after.concat("                            task_id=i[0],","\n");
+    after = after.concat("                            bash_command=command,","\n");
+    after = after.concat("                            email_on_failure = True,","\n");
+    after = after.concat("                            email = '",textFail,"',\n");
+    after = after.concat("                            dag=dag)","\n");
+    after = after.concat("                    if i[0] not in dags_mail:","\n");
+    after = after.concat("                        idag[i[0]] = BashOperator(","\n");
+    after = after.concat("                            task_id=i[0],","\n");
+    after = after.concat("                            bash_command=command,","\n");
+    after = after.concat("                            dag=dag)","\n");
+    after = after.concat("","\n");
+    after = after.concat("        for iter_path in result_R:","\n");
+    after = after.concat("            command = \"Rscript '\" + iter_path + \"'\"","\n");
+    after = after.concat("            iter_dag = ntpath.basename(iter_path)","\n");
+    after = after.concat("            i = iter_dag.split('.')","\n");
+    after = after.concat("","\n");
+    after = after.concat("            if i[0] in dags:","\n");
+    after = after.concat("                if i[0] not in idag:","\n");
+    after = after.concat("                    if i[0] in dags_mail:","\n");
+    after = after.concat("                        idag[i[0]] = BashOperator(","\n");
+    after = after.concat("                            task_id=i[0],","\n");
+    after = after.concat("                            bash_command=command,","\n");
+    after = after.concat("                            email_on_failure = True,","\n");
+    after = after.concat("                            email = '",textFail,"',\n");
+    after = after.concat("                            dag=dag)","\n");
+    after = after.concat("                    if i[0] not in dags_mail:","\n");
+    after = after.concat("                        idag[i[0]] = BashOperator(","\n");
+    after = after.concat("                            task_id=i[0],","\n");
+    after = after.concat("                            bash_command=command,","\n");
+    after = after.concat("                            dag=dag)","\n");
+    after = after.concat("","\n");
+    after = after.concat("    for parent in dags:","\n");
+    after = after.concat("        for child in dags[parent]:","\n");
+    after = after.concat("            # Setting child node as upstream to parent task","\n");
+    after = after.concat("            idag[child].set_upstream(idag[parent])","\n");
+
+    var textSaveAs = before.concat(after);
+    textSaveAs = textSaveAs.replace(/\n/g, "\r\n");
+    var textToSaveAsBlob = new Blob([textSaveAs], {type:"text/plain"});
+    var textToSaveAsURL = window.URL.createObjectURL(textToSaveAsBlob);
+
+    var downloadLink = document.createElement("a");
+    downloadLink.download = textDAGName + '.py';
+    downloadLink.innerHTML = "Download File";
+    downloadLink.href = textToSaveAsURL;
+    downloadLink.onclick = destroyClickedElement;
+    downloadLink.style.display = "none";
+    document.body.appendChild(downloadLink);
+
+    downloadLink.click();
+
+}
+
+function destroyClickedElement(event)
+{
+    document.body.removeChild(event.target);
+}
+
+document.querySelector("button").addEventListener("click",function () {
+
+});
+
+$("#makeEditable").SetEditable({
+    $addButton: $("#but_add")
+}), jQuery(function() {
+    jQuery("#but_add").click(), jQuery("#bEdit").click()
+});
